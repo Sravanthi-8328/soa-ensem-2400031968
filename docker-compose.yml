@@ -2,41 +2,28 @@
 name: BUSTRIPPROJECT
 
 services:
-
-  eureka-server:
-    image: eureka-server
-    container_name: eureka-server
-    ports:
-      - "8761:8761"
-    networks:
-      - bustrip-network
-
   postgres-db:
     image: postgres:15
     container_name: postgres-db
     environment:
       POSTGRES_DB: exam_2400031968
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: docker
-    ports:
-      - "5432:5432"
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
     volumes:
       - postgres-data:/var/lib/postgresql/data
     networks:
       - bustrip-network
 
   bustrip-backend:
-    image: bustrip-backend
-    container_name: bustrip-backend-container
+    image: sravanthi2580/bustrip-backend:latest
+    container_name: bustrip-backend
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-db:5432/exam_2400031968
       SPRING_DATASOURCE_USERNAME: postgres
-      SPRING_DATASOURCE_PASSWORD: docker
-      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka/
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
     ports:
       - "8081:8081"
     depends_on:
-      - eureka-server
       - postgres-db
     networks:
       - bustrip-network
@@ -46,5 +33,4 @@ volumes:
 
 networks:
   bustrip-network:
-    name: bustrip-network
-    external: true
+    driver: bridge
