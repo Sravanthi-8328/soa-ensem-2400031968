@@ -24,14 +24,6 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build and push frontend
-        uses: docker/build-push-action@v6
-        with:
-          context: ./Frontend-BusTrip/bustrip-frontend
-          file: ./Frontend-BusTrip/bustrip-frontend/Dockerfile
-          push: true
-          tags: sravanthi2580/bustrip-frontend:latest
-
       - name: Build and push backend
         uses: docker/build-push-action@v6
         with:
@@ -39,11 +31,3 @@ jobs:
           file: ./CrudServiceProject/Dockerfile
           push: true
           tags: sravanthi2580/bustrip-backend:latest
-
-      - name: Build and push Eureka server
-        uses: docker/build-push-action@v6
-        with:
-          context: ./EurekaServer
-          file: ./EurekaServer/Dockerfile
-          push: true
-          tags: sravanthi2580/bustrip-eureka-server:latest
